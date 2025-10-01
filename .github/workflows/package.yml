@@ -20,6 +20,9 @@ jobs:
         repository: trinodb/trino-csharp-client
         path: trino-csharp-client
 
+    - name: List files
+      run: ls -R ${{ github.workspace }}
+
     - name: Setup .NET SDK
       uses: actions/setup-dotnet@v3
       with:
