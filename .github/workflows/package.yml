@@ -26,22 +26,22 @@ jobs:
         dotnet-version: '7.0.x'
 
     - name: Restore dependencies
-      working-directory: trino-csharp-client/src
+      working-directory: ${{ github.workspace }}/trino-csharp-client/src
       run: dotnet restore TrinoDriver.sln
 
     - name: Build solution
-      working-directory: trino-csharp-client/src
+      working-directory: ${{ github.workspace }}/trino-csharp-client/src
       run: dotnet build TrinoDriver.sln --configuration Release --no-restore
 
     - name: Pack projects
-      working-directory: trino-csharp-client/src
+      working-directory: ${{ github.workspace }}/trino-csharp-client/src
       run: |
         dotnet pack Trino.Client/Trino.Client.csproj -c Release -o ./nupkg --no-build /p:Version=${{ github.ref_name || '1.0.0-local' }}
         dotnet pack Trino.Data.ADO/Trino.Data.ADO.csproj -c Release -o ./nupkg --no-build /p:Version=${{ github.ref_name || '1.0.0-local' }}
         dotnet pack Trino.Client.Auth/Trino.Client.Auth.csproj -c Release -o ./nupkg --no-build /p:Version=${{ github.ref_name || '1.0.0-local' }}
 
     - name: Push packages to NuGet.org
-      working-directory: trino-csharp-client/src/nupkg
+      working-directory: ${{ github.workspace }}/trino-csharp-client/src/nupkg
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
       run: |
